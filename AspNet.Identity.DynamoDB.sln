@@ -3,9 +3,36 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4CBCD8E4-747F-4365-9FB6-7C284BF73CE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNet.Identity.DynamoDB", "AspNet.Identity.DynamoDB", "{C13070FA-99ED-48E0-BD19-ABF3C12D464D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Identity.DynamoDB", "src\AspNet.Identity.DynamoDB\AspNet.Identity.DynamoDB\AspNet.Identity.DynamoDB.csproj", "{4124C310-7A0B-4750-B75A-9B6288F18C98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Identity.DynamoDB.Tests", "src\AspNet.Identity.DynamoDB.Tests\AspNet.Identity.DynamoDB.Tests.csproj", "{0908AE7F-FB41-419A-BB6E-1D61EEA60107}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4124C310-7A0B-4750-B75A-9B6288F18C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4124C310-7A0B-4750-B75A-9B6288F18C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4124C310-7A0B-4750-B75A-9B6288F18C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4124C310-7A0B-4750-B75A-9B6288F18C98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0908AE7F-FB41-419A-BB6E-1D61EEA60107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0908AE7F-FB41-419A-BB6E-1D61EEA60107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0908AE7F-FB41-419A-BB6E-1D61EEA60107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0908AE7F-FB41-419A-BB6E-1D61EEA60107}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C13070FA-99ED-48E0-BD19-ABF3C12D464D} = {4CBCD8E4-747F-4365-9FB6-7C284BF73CE9}
+		{4124C310-7A0B-4750-B75A-9B6288F18C98} = {C13070FA-99ED-48E0-BD19-ABF3C12D464D}
+		{0908AE7F-FB41-419A-BB6E-1D61EEA60107} = {C13070FA-99ED-48E0-BD19-ABF3C12D464D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1AEC23EB-C816-4893-877F-5BC3F9F6B7D3}
