@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNet.Identity.DynamoDB", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Identity.DynamoDB", "src\AspNet.Identity.DynamoDB\AspNet.Identity.DynamoDB\AspNet.Identity.DynamoDB.csproj", "{4124C310-7A0B-4750-B75A-9B6288F18C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Identity.DynamoDB.Tests", "src\AspNet.Identity.DynamoDB.Tests\AspNet.Identity.DynamoDB.Tests.csproj", "{0908AE7F-FB41-419A-BB6E-1D61EEA60107}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNet.Identity.DynamoDB.Tests", "src\AspNet.Identity.DynamoDB.Tests\AspNet.Identity.DynamoDB.Tests.csproj", "{0908AE7F-FB41-419A-BB6E-1D61EEA60107}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiSample", "src\WebApiSample\WebApiSample.csproj", "{8BD960EC-4127-4ADB-B8E5-6F19D3F2712E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{0908AE7F-FB41-419A-BB6E-1D61EEA60107}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0908AE7F-FB41-419A-BB6E-1D61EEA60107}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0908AE7F-FB41-419A-BB6E-1D61EEA60107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD960EC-4127-4ADB-B8E5-6F19D3F2712E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD960EC-4127-4ADB-B8E5-6F19D3F2712E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD960EC-4127-4ADB-B8E5-6F19D3F2712E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD960EC-4127-4ADB-B8E5-6F19D3F2712E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -33,6 +39,7 @@ Global
 		{C13070FA-99ED-48E0-BD19-ABF3C12D464D} = {4CBCD8E4-747F-4365-9FB6-7C284BF73CE9}
 		{4124C310-7A0B-4750-B75A-9B6288F18C98} = {C13070FA-99ED-48E0-BD19-ABF3C12D464D}
 		{0908AE7F-FB41-419A-BB6E-1D61EEA60107} = {C13070FA-99ED-48E0-BD19-ABF3C12D464D}
+		{8BD960EC-4127-4ADB-B8E5-6F19D3F2712E} = {C13070FA-99ED-48E0-BD19-ABF3C12D464D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1AEC23EB-C816-4893-877F-5BC3F9F6B7D3}
