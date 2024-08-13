@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AspNet.Identity.DynamoDB.Stores;
 
-public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>
+public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>, IUserPasswordStore<DynamoDbIdentityUser>
 {
     private IDynamoDBContext _context;
 
@@ -28,7 +28,12 @@ public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>
 
     public Task<string?> GetUserNameAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        return Task.FromResult(user.UserName);
     }
 
     public Task SetUserNameAsync(DynamoDbIdentityUser user, string? userName, CancellationToken cancellationToken)
@@ -44,7 +49,19 @@ public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>
     public Task SetNormalizedUserNameAsync(DynamoDbIdentityUser user, string? normalizedName,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        if (normalizedName == null)
+        {
+            throw new ArgumentNullException(nameof(normalizedName));
+        }
+
+        user.SetNormalizedUserName(normalizedName);
+
+        return Task.FromResult(0);
     }
 
     public async Task<IdentityResult> CreateAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
@@ -233,5 +250,37 @@ public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>
         });
 
         await DynamoDbHelpers.WaitForActiveTableAsync(client, userTableName);
+    }
+
+    public Task SetPasswordHashAsync(DynamoDbIdentityUser user, string? passwordHash, CancellationToken cancellationToken)
+    {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        user.SetPasswordHash(passwordHash);
+
+        return Task.FromResult(0);
+    }
+
+    public Task<string?> GetPasswordHashAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
+    {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        return Task.FromResult(user.PasswordHash);
+    }
+
+    public Task<bool> HasPasswordAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
+    {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        return Task.FromResult(user.PasswordHash != null);
     }
 }

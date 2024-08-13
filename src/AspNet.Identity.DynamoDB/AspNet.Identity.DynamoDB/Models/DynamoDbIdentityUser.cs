@@ -75,7 +75,18 @@ public class DynamoDbIdentityUser<TKey> where TKey : IEquatable<TKey>
 
     [DynamoDBProperty(typeof(DateTimeOffsetConverter))]
     public DateTimeOffset DeletedOn { get; set; }
+    public virtual void SetPasswordHash(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+    }
+    public virtual void SetNormalizedUserName(string normalizedUserName)
+    {
+        if (normalizedUserName == null)
+        {
+            throw new ArgumentNullException(nameof(normalizedUserName));
+        }
 
-
+        NormalizedUserName = normalizedUserName;
+    }
     public override string ToString() => UserName ?? string.Empty;
 }
