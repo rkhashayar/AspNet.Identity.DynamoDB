@@ -10,15 +10,22 @@ public class DynamoDbIdentityUser : DynamoDbIdentityUser<string>
 {
     public DynamoDbIdentityUser()
     {
-        Id = Guid.NewGuid().ToString();
-        SecurityStamp = Guid.NewGuid().ToString();
-        CreatedOn = DateTimeOffset.UtcNow;
-
     }
 
-    public DynamoDbIdentityUser(string userName) : this()
+    public DynamoDbIdentityUser(string email) : this()
     {
-        UserName = userName;
+        Email = email;
+        NormalizedEmail = email.ToUpper();
+    }
+
+    public DynamoDbIdentityUser(string email, string userName) : this()
+    {
+        UserName = userName ?? throw new ArgumentNullException(nameof(userName));
+        NormalizedUserName = userName.ToUpper();
+        Email = email;
+        NormalizedEmail = email.ToUpper();
+        Id = Guid.NewGuid().ToString();
+        CreatedOn = DateTimeOffset.UtcNow;
     }
 }
 
@@ -39,10 +46,13 @@ public class DynamoDbIdentityUser<TKey> where TKey : IEquatable<TKey>
     [ProtectedPersonalData]
     public virtual string? UserName { get; set; }
 
+    [DynamoDBGlobalSecondaryIndexHashKey("NormalizedUserName-DeletedOn-index")]
     public virtual string? NormalizedUserName { get; set; }
 
     [ProtectedPersonalData]
     public virtual string? Email { get; set; }
+
+    [DynamoDBGlobalSecondaryIndexHashKey("NormalizedEmail-DeletedOn-index")]
 
     public virtual string? NormalizedEmail { get; set; }
 
@@ -73,7 +83,7 @@ public class DynamoDbIdentityUser<TKey> where TKey : IEquatable<TKey>
     [DynamoDBProperty(typeof(DateTimeOffsetConverter))]
     public DateTimeOffset CreatedOn { get; set; }
 
-    [DynamoDBProperty(typeof(DateTimeOffsetConverter))]
+    [DynamoDBGlobalSecondaryIndexRangeKey("NormalizedEmail-DeletedOn-index", "NormalizedUserName-DeletedOn-index", Converter = typeof(DateTimeOffsetConverter))]
     public DateTimeOffset DeletedOn { get; set; }
     public virtual void SetPasswordHash(string passwordHash)
     {

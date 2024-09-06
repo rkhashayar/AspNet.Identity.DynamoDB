@@ -2,6 +2,7 @@
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Util;
 using AspNet.Identity.DynamoDB.Constants;
@@ -12,18 +13,25 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AspNet.Identity.DynamoDB.Stores;
 
-public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>, IUserPasswordStore<DynamoDbIdentityUser>
+public class DynamoDbIdentityUserStore : 
+    IUserPasswordStore<DynamoDbIdentityUser>,
+    IUserEmailStore<DynamoDbIdentityUser>
 {
     private IDynamoDBContext _context;
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        _context.Dispose();
     }
 
     public Task<string> GetUserIdAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        return Task.FromResult(user.Id);
     }
 
     public Task<string?> GetUserNameAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
@@ -90,9 +98,31 @@ public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>, IUser
         throw new NotImplementedException();
     }
 
-    public Task<DynamoDbIdentityUser?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+    public async Task<DynamoDbIdentityUser?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (normalizedUserName == null)
+        {
+            throw new ArgumentNullException(nameof(normalizedUserName));
+        }
+
+        cancellationToken.ThrowIfCancellationRequested();
+        var searchConfig = new QueryOperationConfig
+        {
+            IndexName = "NormalizedUserName-DeletedOn-index",
+            KeyExpression = new Expression
+            {
+                ExpressionStatement = "NormalizedUserName = :name AND DeletedOn = :deletedOn",
+                ExpressionAttributeValues = new Dictionary<string, DynamoDBEntry>
+                {
+                    { ":name", normalizedUserName },
+                    { ":deletedOn", default(DateTimeOffset).ToString("o") }
+                }
+            },
+            Limit = 1
+        };
+        var search = _context.FromQueryAsync<DynamoDbIdentityUser>(searchConfig);
+        var users = await search.GetRemainingAsync(cancellationToken);
+        return users?.FirstOrDefault();
     }
 
     public Task EnsureInitializedAsync(
@@ -282,5 +312,90 @@ public class DynamoDbIdentityUserStore : IUserStore<DynamoDbIdentityUser>, IUser
         }
 
         return Task.FromResult(user.PasswordHash != null);
+    }
+
+    public Task SetEmailAsync(DynamoDbIdentityUser user, string? email, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string?> GetEmailAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
+    {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        var email = user.Email;
+
+        return Task.FromResult(email);
+    }
+
+    public Task<bool> GetEmailConfirmedAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task SetEmailConfirmedAsync(DynamoDbIdentityUser user, bool confirmed, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<DynamoDbIdentityUser?> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+    {
+        if (normalizedEmail == null)
+        {
+            throw new ArgumentNullException(nameof(normalizedEmail));
+        }
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var search = _context.FromQueryAsync<DynamoDbIdentityUser>(new QueryOperationConfig
+        {
+            IndexName = "NormalizedEmail-DeletedOn-index",
+            KeyExpression = new Expression
+            {
+                ExpressionStatement = "NormalizedEmail = :email AND DeletedOn = :deletedOn",
+                ExpressionAttributeValues = new Dictionary<string, DynamoDBEntry>
+                {
+                    { ":email", normalizedEmail },
+                    { ":deletedOn", default(DateTimeOffset).ToString("o") }
+                }
+            },
+            Limit = 1
+        });
+        var users = await search.GetRemainingAsync(cancellationToken);
+        return users?.FirstOrDefault();
+    }
+
+    public Task<string?> GetNormalizedEmailAsync(DynamoDbIdentityUser user, CancellationToken cancellationToken)
+    {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        var normalizedEmail = user.NormalizedEmail;
+
+        return Task.FromResult(normalizedEmail);
+    }
+
+    public Task SetNormalizedEmailAsync(DynamoDbIdentityUser user, string? normalizedEmail, CancellationToken cancellationToken)
+    {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        // This method can be called even if user doesn't have an e-mail.
+        // Act cool in this case and gracefully handle.
+        // More info: https://github.com/aspnet/Identity/issues/645
+
+        if (normalizedEmail != null)
+        {
+            user.NormalizedEmail = normalizedEmail;
+        }
+
+        return Task.FromResult(0);
     }
 }

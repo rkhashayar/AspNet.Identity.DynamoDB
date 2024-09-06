@@ -10,7 +10,7 @@ namespace AspNet.Identity.DynamoDB.Tests
         [Fact]
         public async Task Should_create_user()
         {
-            var user = new DynamoDbIdentityUser("test_user");
+            var user = new DynamoDbIdentityUser("test@test.com", "test");
             using var dbProvider = DynamoDbServerHelpers.CreateDatabase();
             var userStore = new DynamoDbIdentityUserStore();
             await userStore.EnsureInitializedAsync(dbProvider.Client, dbProvider.Context);
