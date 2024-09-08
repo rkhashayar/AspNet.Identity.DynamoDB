@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageId>NuGet.Workflow</PackageId>
+    <PackageId>AspNet.Identity.DynamoDB</PackageId>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://nuget.pkg.github.com/rkhashayar/index.json</RepositoryUrl>
   </PropertyGroup>
