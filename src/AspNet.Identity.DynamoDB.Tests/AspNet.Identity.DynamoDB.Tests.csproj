@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AspNet.Identity.DynamoDB\AspNet.Identity.DynamoDB.csproj" />
     <ProjectReference Include="..\AspNet.Identity.DynamoDB\AspNet.Identity.DynamoDB\AspNet.Identity.DynamoDB.csproj" />
   </ItemGroup>
 
