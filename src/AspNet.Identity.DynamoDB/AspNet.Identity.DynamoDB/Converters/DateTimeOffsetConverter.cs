@@ -5,13 +5,7 @@ namespace AspNet.Identity.DynamoDB.Converters;
 
 public class DateTimeOffsetConverter : IPropertyConverter
 {
-    public DynamoDBEntry ToEntry(object value)
-    {
-        return ((DateTimeOffset)value).ToString("o");
-    }
+    public DynamoDBEntry ToEntry(object value) => ((DateTimeOffset)value).ToString("o");
 
-    public object FromEntry(DynamoDBEntry entry)
-    {
-        return DateTimeOffset.ParseExact(entry.AsString(), "o", null);
-    }
+    public object FromEntry(DynamoDBEntry entry) => DateTimeOffset.ParseExact(entry.AsString(), "o", null);
 }

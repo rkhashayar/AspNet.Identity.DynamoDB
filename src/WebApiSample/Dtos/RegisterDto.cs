@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApiSample.ViewModels;
+namespace WebApiSample.Dtos;
 
-public class RegisterViewModel
+public class RegisterDto
 {
     [Required]
     [EmailAddress]

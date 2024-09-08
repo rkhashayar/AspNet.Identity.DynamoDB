@@ -9,7 +9,6 @@ public static class DynamoDbClientExtensions
     public static async Task<List<string>> ListAllTablesAsync(this IAmazonDynamoDB client)
     {
         var tables = new List<string>();
-
         var tableResponse = await ListTablesAsync(client, null);
         tables.AddRange(tableResponse.TableNames);
         while (tableResponse.LastEvaluatedTableName != null)

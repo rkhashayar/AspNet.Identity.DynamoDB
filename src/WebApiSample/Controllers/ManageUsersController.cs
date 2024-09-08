@@ -6,8 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WebApiSample.Dtos;
 using WebApiSample.Models;
-using WebApiSample.ViewModels;
 
 namespace WebApiSample.Controllers;
 
@@ -21,7 +21,7 @@ public class ManageUsersController(
     [AllowAnonymous]
     [HttpPost]
     [Route("register")]
-    public async Task<IdentityResult> Register(RegisterViewModel model, CancellationToken cancellationToken)
+    public async Task<IdentityResult> Register(RegisterDto model, CancellationToken cancellationToken)
     {
         return await userManager.CreateAsync(new DynamoDbIdentityUser(model.Email, model.Username), model.Password);
     }
@@ -67,7 +67,7 @@ public class ManageUsersController(
         var ci = new ClaimsIdentity();
 
         ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-
+        ci.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
         return ci;
     }
 }

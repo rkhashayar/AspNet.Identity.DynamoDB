@@ -85,18 +85,8 @@ public class DynamoDbIdentityUser<TKey> where TKey : IEquatable<TKey>
 
     [DynamoDBGlobalSecondaryIndexRangeKey("NormalizedEmail-DeletedOn-index", "NormalizedUserName-DeletedOn-index", Converter = typeof(DateTimeOffsetConverter))]
     public DateTimeOffset DeletedOn { get; set; }
-    public virtual void SetPasswordHash(string passwordHash)
-    {
-        PasswordHash = passwordHash;
-    }
-    public virtual void SetNormalizedUserName(string normalizedUserName)
-    {
-        if (normalizedUserName == null)
-        {
-            throw new ArgumentNullException(nameof(normalizedUserName));
-        }
-
-        NormalizedUserName = normalizedUserName;
-    }
+    public virtual void SetPasswordHash(string passwordHash) => PasswordHash = passwordHash;
+    public virtual void SetNormalizedUserName(string normalizedUserName) 
+        => NormalizedUserName = normalizedUserName ?? throw new ArgumentNullException(nameof(normalizedUserName));
     public override string ToString() => UserName ?? string.Empty;
 }
