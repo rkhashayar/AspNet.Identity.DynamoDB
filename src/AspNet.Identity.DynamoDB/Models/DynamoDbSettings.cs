@@ -1,4 +1,4 @@
-﻿namespace WebApiSample.Models;
+﻿namespace AspNet.Identity.DynamoDB.Models;
 
 public class DynamoDbSettings
 {

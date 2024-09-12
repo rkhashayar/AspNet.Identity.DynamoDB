@@ -1,14 +1,13 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using AspNet.Identity.DynamoDB.Extensions;
 using AspNet.Identity.DynamoDB.Models;
 using AspNet.Identity.DynamoDB.Stores;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using WebApiSample.Models;
 
 namespace WebApiSample;
 
@@ -36,15 +35,7 @@ public class Startup(IConfiguration configuration)
 
         var dynamoDbSettings = configuration.GetSection("DynamoDbSettings");
         services.Configure<DynamoDbSettings>(dynamoDbSettings);
-        services.AddSingleton<IUserStore<DynamoDbIdentityUser>, DynamoDbIdentityUserStore>();
-        services.AddSingleton<IUserEmailStore<DynamoDbIdentityUser>, DynamoDbIdentityUserStore>();
-        services.AddSingleton<IPasswordHasher<DynamoDbIdentityUser>, PasswordHasher<DynamoDbIdentityUser>>();
-        services.AddSingleton<ILookupNormalizer, UpperInvariantLookupNormalizer>();
-        services.AddSingleton<IdentityErrorDescriber>();
-        services.AddSingleton<UserManager<DynamoDbIdentityUser>>();
-        services.TryAddSingleton<IUserClaimsPrincipalFactory<DynamoDbIdentityUser>, UserClaimsPrincipalFactory<DynamoDbIdentityUser>>();
-        services.AddScoped<SignInManager<DynamoDbIdentityUser>>();
-        services.AddScoped<IUserConfirmation<DynamoDbIdentityUser>, DefaultUserConfirmation<DynamoDbIdentityUser>>();
+        services.AddDynamoDbIdentity();
 
         services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sample API", Version = "v1" }); });
         services.AddControllers();
